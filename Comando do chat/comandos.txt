@@ -1,0 +1,89 @@
+// App.jsx
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Gallery from './Gallery';
+import PhotoDetails from './PhotoDetails';
+
+const App = () => {
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact component={Gallery} />
+        <Route path="/photo/:id" component={PhotoDetails} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+
+
+
+// Gallery.jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const items = [
+  { id: 1, titulo: 'Foto 1', foto: 'https://via.placeholder.com/150', descricao: 'Descrição da Foto 1' },
+  { id: 2, titulo: 'Foto 2', foto: 'https://via.placeholder.com/150', descricao: 'Descrição da Foto 2' },
+  { id: 3, titulo: 'Foto 3', foto: 'https://via.placeholder.com/150', descricao: 'Descrição da Foto 3' },
+];
+
+const Gallery = () => {
+  return (
+    <div>
+      <h1>Galeria de Fotos</h1>
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>
+            <Link to={`/photo/${item.id}`}>
+              <img src={item.foto} alt={item.titulo} />
+              <h2>{item.titulo}</h2>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default Gallery;
+
+
+
+// PhotoDetails.jsx
+import React from 'react';
+import { useParams } from 'react-router-dom';
+
+const items = [
+  { id: 1, titulo: 'Foto 1', foto: 'https://via.placeholder.com/150', descricao: 'Descrição da Foto 1' },
+  { id: 2, titulo: 'Foto 2', foto: 'https://via.placeholder.com/150', descricao: 'Descrição da Foto 2' },
+  { id: 3, titulo: 'Foto 3', foto: 'https://via.placeholder.com/150', descricao: 'Descrição da Foto 3' },
+];
+
+const PhotoDetails = () => {
+  const { id } = useParams();
+  const item = items.find(item => item.id === parseInt(id));
+
+  if (!item) {
+    return <div>Item não encontrado.</div>;
+  }
+
+  return (
+    <div>
+      <h1>{item.titulo}</h1>
+      <img src={item.foto} alt={item.titulo} />
+      <p>ID: {item.id}</p>
+      <p>Descrição: {item.descricao}</p>
+    </div>
+  );
+}
+
+export default PhotoDetails;
+
+
+
+Como Funciona
+App.jsx: Configura as rotas da aplicação, definindo a página inicial e a página de detalhes.
+Gallery.jsx: Exibe uma lista de fotos. Cada foto é um link que leva à página de detalhes correspondente.
+PhotoDetails.jsx: Mostra os detalhes da foto selecionada, usando o ID da URL para encontrar o item correto no array.
